@@ -380,6 +380,8 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
                     target -= 1 + mTargetOffset;
                     if (target < mStoredTargets.length && mStoredTargets[target] != null) {
                         try {
+                            String[] cmd = { "/system/bin/sh", "-c", "echo 4 > /sys/android_touch/unlock", };
+                            Runtime.getRuntime().exec(cmd);
                             Intent tIntent = Intent.parseUri(mStoredTargets[target], 0);
                             tIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             mContext.startActivity(tIntent);
