@@ -26,6 +26,7 @@ import com.android.internal.widget.multiwaveview.TargetDrawable;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ActivityNotFoundException;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -388,6 +389,7 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
                             mCallback.goToUnlockScreen();
                             return;
                         } catch (URISyntaxException e) {
+                        } catch (ActivityNotFoundException e) {
                         }
                     }
                 }
@@ -628,3 +630,4 @@ class LockScreen extends LinearLayout implements KeyguardScreen {
     public void onPhoneStateChanged(String newState) {
     }
 }
+
