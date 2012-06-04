@@ -60,6 +60,7 @@ static bool checkPermission() {
 }
 
 /* Returns true if HDMI mode, false if DVI or on errors */
+#ifdef QCOM_HARDWARE
 static bool isHDMIMode() {
     char mode = '0';
     const char* SYSFS_HDMI_MODE =
@@ -77,6 +78,7 @@ static bool isHDMIMode() {
     close(modeFile);
     return (mode == '1') ? true : false;
 }
+#endif
 
 namespace {
     extern struct audio_policy_service_ops aps_ops;
@@ -189,10 +191,12 @@ status_t AudioPolicyService::setDeviceConnectionState(audio_devices_t device,
             state != AUDIO_POLICY_DEVICE_STATE_UNAVAILABLE) {
         return BAD_VALUE;
     }
+#ifdef QCOM_HARDWARE
     /* On HDMI connection, return if we are not in HDMI mode */
     if(device == AUDIO_DEVICE_OUT_AUX_DIGITAL && !isHDMIMode()) {
         return NO_ERROR;
     }
+#endif
     LOGV("setDeviceConnectionState() tid %d", gettid());
     Mutex::Autolock _l(mLock);
     return mpAudioPolicy->set_device_connection_state(mpAudioPolicy, device,
